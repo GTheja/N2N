@@ -22,7 +22,6 @@ public class N2NResource {
     @POST
     @Path("/register")
     public Response getRegister(@Context HttpHeaders headers){
-        n2NAuthentication.registerUser();
         return Response.ok().build();
     }
 
