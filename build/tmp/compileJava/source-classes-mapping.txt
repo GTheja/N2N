@@ -1,4 +1,10 @@
 app/n2/main/Main.java
  app.n2.main.Main
+app/n2/main/account/AccountDTO.java
+ app.n2.main.account.AccountDTO
+app/n2/main/authentication/LoginDTO.java
+ app.n2.main.authentication.LoginDTO
+app/n2/main/authentication/RegisterDTO.java
+ app.n2.main.authentication.RegisterDTO
 app/n2/main/rest/N2NResource.java
  app.n2.main.rest.N2NResource
