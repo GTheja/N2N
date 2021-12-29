@@ -5,10 +5,11 @@ import app.n2.main.service.N2NAuthentication;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Objects;
 
 @Path("/")
-public class N2NResource {
+public class N2NAuthenticationResource {
 
     N2NAuthentication n2NAuthentication = new N2NAuthentication();
 
@@ -46,18 +47,17 @@ public class N2NResource {
     @Path("/verify")
     public Response getVerifyCode(@QueryParam("code") String code){
         n2NAuthentication.verifyCode(code);
-        return Response.ok().build();
+        String redirectURI = "http://localhost:8080/login";
+        return Response.temporaryRedirect(URI.create(redirectURI)).status(302).build();
     }
 
     @POST
-    @Path("/home")
-    public Response getHome(@FormParam("email") String email, @FormParam("password") String password){
-        //checks for user email and password present in db or not
-        //check for email if email no present throw error.
-        //check for password if password not present throw error.
-        //If yes redirect to home page
-        //if not throw error with proper message.
-        return Response.ok().build();
+    @Path("/loginVerify")
+    public Response getLoginVerification(@FormParam("email") String email,
+                                         @FormParam("password") String password){
+        n2NAuthentication.getLoginVerification(email, password);
+        String redirectHomeUrl = "http://localhost:8080/home";
+        return Response.temporaryRedirect(URI.create(redirectHomeUrl)).status(302).build();
     }
 
 }

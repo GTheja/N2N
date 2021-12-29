@@ -14,9 +14,9 @@ public class N2NAuthentication {
     private final AuthenticationDB authenticationDB = new AuthenticationDB();
     private final MailService service = new MailService();
 
-    public boolean checkUserEmail(String email){
-        //authenticationDB.readDB(email);
-        return false;
+    public void getLoginVerification(String email, String password){
+        RegisterDTO registerDTO = authenticationDB.readWithEmail(email);
+        re
     }
 
     public String registerUser(String email, String username, String password){
