@@ -1,16 +1,22 @@
 package app.n2.main.authentication;
 
 public class RegisterDTO {
+
+    public enum isAuthStates{
+        AUTHENTICATED,
+        NOTAUTHENTICATED
+    }
+
     public String email;
     public String username;
     public String password;
-    public String confirmPassword;
+    public String code;
 
-    public RegisterDTO(String email, String username, String password, String confirmPassword) {
+    public RegisterDTO(String email, String username, String password, String code) {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.confirmPassword = confirmPassword;
+        this.code = code;
     }
 
     public String getEmail() {
@@ -25,7 +31,7 @@ public class RegisterDTO {
         return password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public String getCode() {
+        return code;
     }
 }
