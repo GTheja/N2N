@@ -23,6 +23,14 @@ public class N2NAuthenticationResource {
         return Response.ok(resourceAsStream).build();
     }
 
+    @GET
+    @Path("/register")
+    public Response getRegisterPage(){
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        InputStream resourceAsStream = classLoader.getResourceAsStream("register.html");
+        return Response.ok(resourceAsStream).build();
+    }
+
     @POST
     @Path("/register")
     public Response getRegister(@FormParam("email") String email,
@@ -49,7 +57,7 @@ public class N2NAuthenticationResource {
     }
 
     @POST
-    @Path("/loginVerify")
+    @Path("/login")
     public Response getLoginVerification(@FormParam("email") String email,
                                          @FormParam("password") String password){
         isEmailPresent(email);

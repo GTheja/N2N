@@ -10,6 +10,6 @@ public class N2NHomeResource {
     @GET
     @Path("/")
     public Response getHome(){
-        return Response.ok().build();
+        return Response.ok("Hello").build();
     }
 }
