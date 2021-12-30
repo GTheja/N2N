@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
 
+import static app.n2.main.utils.Validations.*;
+
 @Path("/")
 public class N2NAuthenticationResource {
 
@@ -26,15 +28,10 @@ public class N2NAuthenticationResource {
     public Response getRegister(@FormParam("email") String email,
                                 @FormParam("password") String password,
     @FormParam("confirmPassword") String confirmPassword, @FormParam("username") String username){
-        if(email == null || email.isEmpty()){
-            throw new IllegalArgumentException("Email Not found");
-        } if(password == null || password.isEmpty()){
-            throw new IllegalArgumentException("Password Not found");
-        } if(confirmPassword == null || confirmPassword.isEmpty()){
-            throw new IllegalArgumentException("Confirm password Not found");
-        } if(username == null || username.isEmpty()){
-            throw new IllegalArgumentException("Username Not found");
-        }
+        isEmailPresent(email);
+        isPasswordPresent(password);
+        isConfirmPasswordPresent(confirmPassword);
+        isUsernamePresent(username);
         if(!(Objects.equals(password, confirmPassword))){
             throw new IllegalArgumentException("Confirm password is not matching");
         }
@@ -55,6 +52,8 @@ public class N2NAuthenticationResource {
     @Path("/loginVerify")
     public Response getLoginVerification(@FormParam("email") String email,
                                          @FormParam("password") String password){
+        isEmailPresent(email);
+        isPasswordPresent(password);
         n2NAuthentication.getLoginVerification(email, password);
         String redirectHomeUrl = "http://localhost:8080/home";
         return Response.temporaryRedirect(URI.create(redirectHomeUrl)).status(302).build();

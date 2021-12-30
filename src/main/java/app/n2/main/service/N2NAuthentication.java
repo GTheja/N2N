@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -15,14 +16,22 @@ public class N2NAuthentication {
     private final MailService service = new MailService();
 
     public void getLoginVerification(String email, String password){
-        RegisterDTO registerDTO = authenticationDB.readWithEmail(email);
-        re
+        try {
+            RegisterDTO registerDTO = authenticationDB.readWithEmail(email);
+            if(!Objects.equals(registerDTO.getEmail(), email) &&
+                    !Objects.equals(registerDTO.getPassword(), getHashedPassword(email, password))){
+                throw new IllegalStateException("Invalid email and password");
+            }
+
+        }catch (NoSuchAlgorithmException cause){
+            throw new IllegalStateException("Check your credentials");
+        }
     }
 
     public String registerUser(String email, String username, String password){
         try {
             String code = UUID.randomUUID().toString();
-            RegisterDTO  registerDTO = new RegisterDTO(email,username,getHashedPassword(username, password),code);
+            RegisterDTO  registerDTO = new RegisterDTO(email,username,getHashedPassword(email, password),code);
             authenticationDB.createDB(registerDTO.getEmail(),registerDTO.getUsername()
                     ,registerDTO.getPassword(), RegisterDTO.isAuthStates.NOTAUTHENTICATED.toString()
                     ,registerDTO.getCode());

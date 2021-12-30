@@ -73,16 +73,16 @@ public class AuthenticationDB {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 String isAuth = resultSet.getString("isAuth");
-                if(isAuth.contains(RegisterDTO.isAuthStates.AUTHENTICATED.toString())){
+                if (isAuth.contains(RegisterDTO.isAuthStates.AUTHENTICATED.toString())) {
                     return new RegisterDTO(resultSet.getString("email"),
                             resultSet.getString("username"),
                             resultSet.getString("password"),
                             resultSet.getString("code"));
                 }
             }
-            return null;
+            throw new IllegalStateException("Email not authenticated");
         }catch (SQLException cause){
             cause.printStackTrace();
             throw new IllegalStateException("User with email does not exist");

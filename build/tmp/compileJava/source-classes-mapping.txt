@@ -1,17 +1,22 @@
 app/n2/main/Main.java
  app.n2.main.Main
-app/n2/main/rest/N2NResource.java
- app.n2.main.rest.N2NResource
-app/n2/main/service/N2NAuthentication.java
- app.n2.main.service.N2NAuthentication
 app/n2/main/authentication/LoginDTO.java
  app.n2.main.authentication.LoginDTO
-app/n2/main/database/AuthenticationDB.java
- app.n2.main.database.AuthenticationDB
-app/n2/main/authentication/RegisterDTO.java
- app.n2.main.authentication.RegisterDTO
 app/n2/main/account/AccountDTO.java
  app.n2.main.account.AccountDTO
+app/n2/main/service/N2NAuthentication.java
+ app.n2.main.service.N2NAuthentication
+app/n2/main/database/AuthenticationDB.java
+ app.n2.main.database.AuthenticationDB
+app/n2/main/rest/N2NAuthenticationResource.java
+ app.n2.main.rest.N2NAuthenticationResource
+app/n2/main/authentication/RegisterDTO.java
+ app.n2.main.authentication.RegisterDTO
+ app.n2.main.authentication.RegisterDTO$isAuthStates
+app/n2/main/utils/Validations.java
+ app.n2.main.utils.Validations
+app/n2/main/rest/N2NHomeResource.java
+ app.n2.main.rest.N2NHomeResource
 app/n2/main/service/MailService.java
  app.n2.main.service.MailService
  app.n2.main.service.MailService$1
