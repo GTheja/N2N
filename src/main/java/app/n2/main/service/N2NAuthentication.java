@@ -10,18 +10,21 @@ import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 
+import static app.n2.main.utils.Validations.getCreateAccountId;
+
 
 public class N2NAuthentication {
     private final AuthenticationDB authenticationDB = new AuthenticationDB();
     private final MailService service = new MailService();
 
-    public void getLoginVerification(String email, String password){
+    public String getLoginVerification(String email, String password){
         try {
             RegisterDTO registerDTO = authenticationDB.readWithEmail(email);
             if(!Objects.equals(registerDTO.getEmail(), email) &&
                     !Objects.equals(registerDTO.getPassword(), getHashedPassword(email, password))){
                 throw new IllegalStateException("Invalid email and password");
             }
+            return authenticationDB.getAccountId(email);
 
         }catch (NoSuchAlgorithmException cause){
             throw new IllegalStateException("Check your credentials");
@@ -31,8 +34,9 @@ public class N2NAuthentication {
     public String registerUser(String email, String username, String password){
         try {
             String code = UUID.randomUUID().toString();
+            String createAccountId = getCreateAccountId(username);
             RegisterDTO  registerDTO = new RegisterDTO(email,username,getHashedPassword(email, password),code);
-            authenticationDB.createDB(registerDTO.getEmail(),registerDTO.getUsername()
+            authenticationDB.createDB(createAccountId,registerDTO.getEmail(),registerDTO.getUsername()
                     ,registerDTO.getPassword(), RegisterDTO.isAuthStates.NOTAUTHENTICATED.toString()
                     ,registerDTO.getCode());
             return code;
@@ -42,15 +46,12 @@ public class N2NAuthentication {
         }
     }
 
-    public RegisterDTO verifyCode(String code){
+    public void verifyCode(String code){
         RegisterDTO registerDTO = authenticationDB.readDB(code);
         String codeDB = registerDTO.getCode();
         if(codeDB.equals(code)){
             authenticationDB.updateDB(registerDTO.email,
                     RegisterDTO.isAuthStates.AUTHENTICATED.toString());
-            return new RegisterDTO(registerDTO.email,
-                    registerDTO.username,
-                    registerDTO.password, code);
         }
         throw new IllegalStateException("Invalid code");
     }

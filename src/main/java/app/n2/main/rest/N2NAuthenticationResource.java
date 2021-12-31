@@ -3,8 +3,10 @@ package app.n2.main.rest;
 import app.n2.main.service.N2NAuthentication;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Objects;
 
@@ -59,12 +61,22 @@ public class N2NAuthenticationResource {
     @POST
     @Path("/login")
     public Response getLoginVerification(@FormParam("email") String email,
-                                         @FormParam("password") String password){
+                                         @FormParam("password") String password) throws MalformedURLException {
         isEmailPresent(email);
         isPasswordPresent(password);
-        n2NAuthentication.getLoginVerification(email, password);
+        String accountId = n2NAuthentication.getLoginVerification(email, password);
         String redirectHomeUrl = "http://localhost:8080/home";
-        return Response.temporaryRedirect(URI.create(redirectHomeUrl)).status(302).build();
+        return Response.status(302)
+                .header(HttpHeaders.LOCATION, redirectHomeUrl)
+                .header("Set-Cookie", createSessionIdCookie(accountId, URI.create(redirectHomeUrl))).build();
     }
 
+    private String createSessionIdCookie(String sessionInfo, URI originalUri)
+            throws MalformedURLException {
+        String cookieOptions = ";HttpOnly;path=/home";
+        if (originalUri.toURL().getProtocol().equals("https")) {
+            cookieOptions += ";SameSite=None;Secure";
+        }
+        return "N2N-AccountId" + ":" + sessionInfo + cookieOptions;
+    }
 }

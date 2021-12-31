@@ -1,14 +1,19 @@
 package app.n2.main.account;
 
 public class AccountDTO {
-    private String accountId;
-    private String profileId;
-    private String about;
+    private final String accountId;
+    private final String profileId;
+    private final String postId;
+    private final String email;
+    private final String profileName;
 
-    public AccountDTO(String accountId, String profileId, String about) {
+    public AccountDTO(String accountId, String profileId, String profileName,
+                      String postId, String email) {
         this.accountId = accountId;
         this.profileId = profileId;
-        this.about = about;
+        this.postId = postId;
+        this.email = email;
+        this.profileName = profileName;
     }
 
     public String getAccountId() {
@@ -19,7 +24,15 @@ public class AccountDTO {
         return profileId;
     }
 
-    public String getAbout() {
-        return about;
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPostId() {
+        return postId;
     }
 }
